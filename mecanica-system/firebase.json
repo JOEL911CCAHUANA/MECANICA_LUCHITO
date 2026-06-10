@@ -12,14 +12,5 @@
       "**/.*",
       "**/node_modules/**"
     ]
-  },
-  "auth": {
-    "providers": {
-      "emailPassword": true,
-      "googleSignIn": {
-        "oAuthBrandDisplayName": "My App",
-        "supportEmail": "support@undefined.firebaseapp.com"
-      }
-    }
   }
 }

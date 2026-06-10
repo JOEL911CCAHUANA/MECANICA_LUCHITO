@@ -1,0 +1,41 @@
+[debug] [2026-06-02T22:39:05.884Z] ----------------------------------------------------------------------
+[debug] [2026-06-02T22:39:05.888Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Install\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js login
+[debug] [2026-06-02T22:39:05.889Z] CLI Version:   14.18.0
+[debug] [2026-06-02T22:39:05.889Z] Platform:      win32
+[debug] [2026-06-02T22:39:05.889Z] Node Version:  v22.15.0
+[debug] [2026-06-02T22:39:05.890Z] Time:          Tue Jun 02 2026 17:39:05 GMT-0500 (hora estándar de Perú)
+[debug] [2026-06-02T22:39:05.890Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-06-02T22:39:06.386Z] Object "" in "firebase.json" has unknown property: {"additionalProperty":"auth"}
+[info] i  The Firebase CLI’s MCP server feature can optionally make use of Gemini in Firebase. Learn more about Gemini in Firebase and how it uses your data: https://firebase.google.com/docs/gemini-in-firebase#how-gemini-in-firebase-uses-your-data 
+[info] 
+[info] i  Firebase optionally collects CLI and Emulator Suite usage and error reporting information to help improve our products. Data is collected in accordance with Google's privacy policy (https://policies.google.com/privacy) and is not used to identify you. 
+[info] 
+[info] i  To change your preferences at any time, run `firebase logout` and `firebase login` again. 
+[info] 
+[info] Visit this URL on this device to log in:
+[info] https://accounts.google.com/o/oauth2/auth?client_id=563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com&scope=email%20openid%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloudplatformprojects.readonly%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Ffirebase%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloud-platform&response_type=code&state=602503975&redirect_uri=http%3A%2F%2Flocalhost%3A9005
+[info] 
+[info] Waiting for authentication...
+[debug] [2026-06-02T23:12:45.681Z] ----------------------------------------------------------------------
+[debug] [2026-06-02T23:12:45.686Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Install\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy --only firestore:rules
+[debug] [2026-06-02T23:12:45.687Z] CLI Version:   14.18.0
+[debug] [2026-06-02T23:12:45.687Z] Platform:      win32
+[debug] [2026-06-02T23:12:45.688Z] Node Version:  v22.15.0
+[debug] [2026-06-02T23:12:45.689Z] Time:          Tue Jun 02 2026 18:12:45 GMT-0500 (hora estándar de Perú)
+[debug] [2026-06-02T23:12:45.689Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-06-02T23:12:46.040Z] Object "" in "firebase.json" has unknown property: {"additionalProperty":"auth"}
+[debug] [2026-06-02T23:12:46.046Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-06-02T23:12:46.559Z] Error: Could not load the default credentials. Browse to https://cloud.google.com/docs/authentication/getting-started for more information.
+    at GoogleAuth.getApplicationDefaultAsync (C:\Users\Install\AppData\Roaming\npm\node_modules\firebase-tools\node_modules\google-auth-library\build\src\auth\googleauth.js:287:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async GoogleAuth._GoogleAuth_determineClient (C:\Users\Install\AppData\Roaming\npm\node_modules\firebase-tools\node_modules\google-auth-library\build\src\auth\googleauth.js:834:32)
+    at async GoogleAuth.getClient (C:\Users\Install\AppData\Roaming\npm\node_modules\firebase-tools\node_modules\google-auth-library\build\src\auth\googleauth.js:698:20)
+    at async GoogleAuth.getAccessToken (C:\Users\Install\AppData\Roaming\npm\node_modules\firebase-tools\node_modules\google-auth-library\build\src\auth\googleauth.js:722:24)
+    at async autoAuth (C:\Users\Install\AppData\Roaming\npm\node_modules\firebase-tools\lib\requireAuth.js:28:19)
+    at async requireAuth (C:\Users\Install\AppData\Roaming\npm\node_modules\firebase-tools\lib\requireAuth.js:91:20)
+    at async requirePermissions (C:\Users\Install\AppData\Roaming\npm\node_modules\firebase-tools\lib\requirePermissions.js:17:5)
+    at async C:\Users\Install\AppData\Roaming\npm\node_modules\firebase-tools\lib\command.js:262:17
+[error] 
+[error] Error: Failed to authenticate, have you run firebase login?

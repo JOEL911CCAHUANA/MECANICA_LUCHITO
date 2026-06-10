@@ -1,1 +1,206 @@
-<p>clientes works!</p>
+<div class="clientes-shell">
+    <header class="topbar">
+        <div class="brand-block">
+            <div>
+                <h1>Clientes</h1>
+                <p>Gestión y registro de clientes y sus motos</p>
+            </div>
+        </div>
+
+        <div class="topbar-actions">
+            <span class="date-chip">{{ fechaPanel }}</span>
+        </div>
+    </header>
+
+    <section class="stats-grid" aria-label="Resumen de clientes">
+        <article class="stat-card stat-blue">
+            <div>
+                <strong>{{ totalClientesRegistrados() }}</strong>
+                <span>Clientes registrados</span>
+            </div>
+        </article>
+
+        <article class="stat-card stat-purple">
+            <div>
+                <strong>{{ totalMotosRegistradas() }}</strong>
+                <span>Motos registradas</span>
+            </div>
+        </article>
+    </section>
+
+    <section class="clientes-panel">
+        <div class="panel-toolbar">
+            <div class="panel-title">
+                <h2>Lista de Clientes</h2>
+
+            </div>
+
+            <div class="toolbar-buttons">
+                <button class="outline-button csv" type="button" (click)="exportarCSV()">▧ CSV</button>
+                <button class="outline-button pdf" type="button" (click)="exportarPDF()">▤ PDF</button>
+                <button class="outline-button" type="button" (click)="abrirHistorialGeneral()">▣ Historial</button>
+                <button class="primary-button" type="button" (click)="abrirModalNuevo()">♙ Nuevo cliente</button>
+            </div>
+        </div>
+
+        <label class="search-box">
+            <span>⌕</span>
+            <input type="text" placeholder="Buscar por nombre, DNI o teléfono..." [(ngModel)]="busqueda"
+                (input)="filtrarClientes()" />
+        </label>
+
+        <div class="table-wrap" *ngIf="clientesFiltrados.length > 0; else emptyState">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Teléfono</th>
+                        <th>Moto</th>
+                        <th>Última visita</th>
+                        <th>Estado</th>
+                        <th class="print-hidden">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let cliente of clientesMostrados">
+                        <td>
+                            <div class="client-cell">
+                                <span class="avatar">{{ obtenerIniciales(cliente.nombre) }}</span>
+                                <div>
+                                    <strong>{{ cliente.nombre }}</strong>
+                                    <small>{{ cliente.dni }}</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>{{ cliente.telefono || 'Sin teléfono' }}</td>
+                        <td>{{ obtenerResumenMoto(cliente) }}</td>
+                        <td>{{ cliente.ultimaVisita || 'Sin registro' }}</td>
+            <td>
+                            <div class="status-actions">
+                                <span class="status-badge" [class.inactive]="cliente.estado !== 'Activo'">
+                                    {{ cliente.estado }}
+                                </span>
+                                <button class="state-toggle" type="button" title="Cambiar estado"
+                                    (click)="cambiarEstado(cliente)">
+                                    ↺
+                                </button>
+                            </div>
+                        </td>
+            <td class="print-hidden">
+                            <div class="row-actions">
+                                <button class="row-button edit" type="button" title="Editar cliente"
+                                    (click)="editarCliente(cliente)">✎</button>
+                                <button class="row-button history" type="button" title="Ver historial"
+                                    (click)="verHistorial(cliente)">▤</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="show-more" *ngIf="quedanClientesOcultos > 0">
+                <button class="outline-button" type="button" (click)="mostrarMasClientes()">
+                    Mostrar más ({{ quedanClientesOcultos }})
+                </button>
+            </div>
+        </div>
+
+        <ng-template #emptyState>
+            <div class="empty-state">
+                <strong>{{ clientes.length === 0 ? 'Aún no hay clientes registrados' : 'No se encontraron clientes'
+                    }}</strong>
+                <p>{{ clientes.length === 0 ? 'Agrega tu primer cliente desde el botón Nuevo cliente.' : 'Prueba con
+                    otro nombre, DNI o teléfono.' }}</p>
+            </div>
+        </ng-template>
+    </section>
+
+    <div class="modal-backdrop" *ngIf="modalAbierto">
+        <form class="modal-card client-modal" novalidate (ngSubmit)="guardarCliente()">
+            <div class="modal-header">
+                <h3>{{ editando ? 'Editar cliente' : 'Nuevo cliente' }}</h3>
+                <button class="close-btn" type="button" (click)="cerrarModal()" aria-label="Cerrar">×</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-grid">
+                    <label>
+                        <span>Nombre completo *</span>
+                        <input name="nombre" type="text" placeholder="Ej. Juan Ríos Medina"
+                            [(ngModel)]="formCliente.nombre" (input)="validarSoloLetras('nombre')" required />
+                    </label>
+
+                    <label>
+                        <span>DNI</span>
+                        <input name="dni" type="text" inputmode="numeric" maxlength="8" placeholder="Ej. 45231890"
+                            [(ngModel)]="formCliente.dni" (input)="validarSoloNumeros('dni')" />
+                    </label>
+
+                    <label>
+                        <span>Teléfono</span>
+                        <input name="telefono" type="tel" inputmode="numeric" placeholder="Ej. 987654321"
+                            [(ngModel)]="formCliente.telefono" (input)="validarSoloNumeros('telefono')" />
+                    </label>
+
+                    <label class="span-2">
+                        <span>Motos (separadas por coma)</span>
+                        <input name="motos" type="text" placeholder="Honda CB500 ABC-123, Yamaha FZ ZZZ-999"
+                            [(ngModel)]="formCliente.motos" (input)="validarMotos()" />
+                    </label>
+                </div>
+
+                <p class="form-error" *ngIf="errorGuardado">{{ errorGuardado }}</p>
+            </div>
+
+            <div class="modal-actions">
+                <button class="ghost-button" type="button" (click)="cerrarModal()"
+                    [disabled]="guardandoCliente">Cancelar</button>
+                <button class="primary-button save" type="submit" [disabled]="guardandoCliente">
+                    {{ guardandoCliente ? 'Guardando...' : (editando ? 'Guardar cambios' : 'Guardar cliente') }}
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="modal-backdrop" *ngIf="historialAbierto">
+        <div class="modal-card history-modal">
+            <div class="modal-header">
+                <h3>Historial de cliente</h3>
+                <button class="close-btn" type="button" (click)="cerrarHistorial()" aria-label="Cerrar">×</button>
+            </div>
+            <div class="modal-body">
+                <p class="history-name">{{ clienteHistorial?.nombre }}</p>
+                <ul class="history-list" *ngIf="clienteHistorial?.historial?.length; else noHistory">
+                    <li *ngFor="let item of clienteHistorial?.historial">
+                        <span>{{ item.fecha }}</span>
+                        <p>{{ item.nota }}</p>
+                    </li>
+                </ul>
+                <ng-template #noHistory>
+                    <p class="no-data">No hay historial disponible para este cliente.</p>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-backdrop" *ngIf="historialGeneralAbierto">
+        <div class="modal-card history-modal">
+            <div class="modal-header">
+                <h3>Historial general</h3>
+                <button class="close-btn" type="button" (click)="cerrarHistorialGeneral()"
+                    aria-label="Cerrar">×</button>
+            </div>
+            <div class="modal-body">
+                <ul class="history-list" *ngIf="clientes.length > 0; else noGeneralHistory">
+                    <li *ngFor="let cliente of clientes">
+                        <span>{{ cliente.ultimaVisita || 'Sin fecha' }}</span>
+                        <p>{{ cliente.nombre }} · {{ obtenerResumenMoto(cliente) }}</p>
+                    </li>
+                </ul>
+                <ng-template #noGeneralHistory>
+                    <p class="no-data">Todavía no hay movimientos registrados.</p>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</div>

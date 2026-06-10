@@ -1,1 +1,8 @@
-<router-outlet></router-outlet>
+<div class="app-layout" [class.with-sidebar]="showHeader">
+  <app-header *ngIf="showHeader"></app-header>
+  <main class="app-main">
+    <section class="app-page">
+      <router-outlet></router-outlet>
+    </section>
+  </main>
+</div>
