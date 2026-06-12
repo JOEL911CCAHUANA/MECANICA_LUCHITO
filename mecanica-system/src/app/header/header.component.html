@@ -1,0 +1,32 @@
+<aside class="sidebar">
+  <div class="brand">
+    <div class="brand-icon">🔧</div>
+    <div>
+      <div class="brand-title">TallerOS</div>
+      <div class="brand-subtitle">Gestión de taller</div>
+    </div>
+  </div>
+
+  <div class="section-title">MÓDULOS</div>
+
+  <nav class="modules">
+    <a
+      *ngFor="let module of modules"
+      [routerLink]="module.route"
+      class="module"
+      [class.active]="module.active"
+    >
+      <span class="module-icon">•</span>
+      <span class="module-label">{{ module.label }}</span>
+      <span *ngIf="module.badge" class="module-badge">{{ module.badge }}</span>
+    </a>
+  </nav>
+
+  <div class="profile-card">
+    <div class="profile-avatar">AD</div>
+    <div class="profile-info">
+      <div class="profile-role">Administrador</div>
+      <div class="profile-access">Acceso total</div>
+    </div>
+  </div>
+</aside>

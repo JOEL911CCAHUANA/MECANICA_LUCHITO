@@ -1,0 +1,62 @@
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+  width: 100vw;
+}
+
+.app-main {
+  flex: 1;
+  background: #dcdee4;
+  color: #e2e8f0;
+  min-height: 100vh;
+  padding: 16px;
+}
+
+.app-layout.with-sidebar .app-main {
+  margin-left: 260px;
+  width: calc(100vw - 260px);
+}
+
+.app-page {
+  width: 100%;
+  max-width: 1400px;
+  min-height: calc(100vh - 64px);
+  margin: 0 auto;
+  padding: 16px;
+  background: #e5ecf5;
+  border-radius: 24px;
+}
+
+@media (max-width: 800px) {
+  .app-layout {
+    display: block;
+  }
+
+  .app-layout.with-sidebar .app-main {
+    margin-left: 0;
+    width: 100%;
+  }
+}
+
+@media print {
+  app-header {
+    display: none !important;
+  }
+
+  .print-hidden {
+    display: none !important;
+  }
+
+  .app-layout,
+  .app-main,
+  .app-page {
+    display: block;
+    width: 100% !important;
+    min-height: 0;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    border-radius: 0;
+    color: #111827;
+  }
+}

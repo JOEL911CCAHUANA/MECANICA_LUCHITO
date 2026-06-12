@@ -1,0 +1,36 @@
+<div class="container">
+  <div class="form-box">
+    <h1>{{ isLogin ? 'Iniciar Sesión' : 'Crear Cuenta' }}</h1>
+
+    <p class="subtitle">Sistema Mecánico</p>
+
+    <form (ngSubmit)="submit()">
+      <div class="message error" *ngIf="errorMessage">{{ errorMessage }}</div>
+      <div class="message success" *ngIf="successMessage">{{ successMessage }}</div>
+
+      <div class="input-group" *ngIf="!isLogin">
+        <label>Nombre</label>
+        <input type="text" placeholder="Ingrese su nombre" [(ngModel)]="name" name="name" />
+      </div>
+
+      <div class="input-group">
+        <label>Correo</label>
+        <input type="email" placeholder="Ingrese su correo" [(ngModel)]="email" name="email" required />
+      </div>
+
+      <div class="input-group">
+        <label>Contraseña</label>
+        <input type="password" placeholder="Ingrese su contraseña" [(ngModel)]="password" name="password" required />
+      </div>
+
+      <button type="submit" [disabled]="loading">
+        {{ isLogin ? 'Ingresar' : 'Registrarse' }}
+      </button>
+    </form>
+
+    <p class="toggle-text">
+      {{ isLogin ? '¿No tienes cuenta?' : '¿Ya tienes cuenta?' }}
+      <span (click)="toggleForm()">{{ isLogin ? 'Registrarse' : 'Iniciar sesión' }}</span>
+    </p>
+  </div>
+</div>

@@ -1,0 +1,285 @@
+<div class="mecanicos-shell">
+  <!-- HEADER / TOPBAR -->
+  <header class="topbar">
+    <div class="brand-block">
+      <div>
+        <h1>Mecánicos</h1>
+        <p>Gestión y registro de mecánicos del taller</p>
+      </div>
+    </div>
+
+    <div class="topbar-actions">
+      <span class="date-chip">{{ fechaPanel }}</span>
+    </div>
+  </header>
+
+  <!-- ESTADÍSTICAS -->
+  <section class="stats-grid" aria-label="Resumen de mecánicos">
+    <article class="stat-card stat-blue">
+      <div>
+        <strong>{{ totalMecanicos }}</strong>
+        <span>Mecánicos registrados</span>
+      </div>
+    </article>
+
+    <article class="stat-card stat-orange">
+      <div>
+        <strong>{{ totalMecanicosActivos }}</strong>
+        <span>Mecánicos activos</span>
+      </div>
+    </article>
+  </section>
+
+  <!-- FORMULARIO DE REGISTRO/EDICIÓN -->
+  <section class="formulario-mecanicos">
+    <div class="form-header">
+      <h2>{{ editando ? 'Editar Mecánico' : 'Registrar Nuevo Mecánico' }}</h2>
+      <button 
+        *ngIf="editando" 
+        type="button" 
+        class="ghost-button" 
+        (click)="resetearFormulario()">
+        ✕ Cancelar
+      </button>
+    </div>
+
+    <!-- Mensaje de error -->
+    <div *ngIf="errorGuardado" class="error-message">
+      <span>⚠ {{ errorGuardado }}</span>
+      <button type="button" (click)="errorGuardado = ''">✕</button>
+    </div>
+
+    <form [formGroup]="formularioMecanico" (ngSubmit)="guardarMecanico()" class="form-grid">
+      <!-- Nombre Completo -->
+      <div class="form-group form-group-full">
+        <label for="nombre_completo">
+          Nombre Completo <span class="required">*</span>
+        </label>
+        <input
+          id="nombre_completo"
+          type="text"
+          formControlName="nombre_completo"
+          placeholder="Ej: Luis García Pérez"
+          class="form-input"
+          [class.error]="tieneError('nombre_completo', 'required') || tieneError('nombre_completo', 'minlength')" />
+        <small class="error-text" *ngIf="tieneError('nombre_completo', 'required')">
+          El nombre completo es requerido
+        </small>
+        <small class="error-text" *ngIf="tieneError('nombre_completo', 'minlength')">
+          Mínimo 3 caracteres
+        </small>
+      </div>
+
+      <!-- Correo -->
+      <div class="form-group">
+        <label for="correo">
+          Correo Electrónico <span class="required">*</span>
+        </label>
+        <input
+          id="correo"
+          type="email"
+          formControlName="correo"
+          placeholder="Ej: luis@gmail.com"
+          class="form-input"
+          [class.error]="tieneError('correo', 'required') || tieneError('correo', 'email')" />
+        <small class="error-text" *ngIf="tieneError('correo', 'required')">
+          El correo es requerido
+        </small>
+        <small class="error-text" *ngIf="tieneError('correo', 'email')">
+          Correo inválido
+        </small>
+      </div>
+
+      <!-- DNI -->
+      <div class="form-group">
+        <label for="dni">
+          DNI <span class="required">*</span>
+        </label>
+        <input
+          id="dni"
+          type="text"
+          formControlName="dni"
+          placeholder="Ej: 73506894"
+          class="form-input"
+          maxlength="8"
+          [class.error]="tieneError('dni', 'required') || tieneError('dni', 'pattern')" />
+        <small class="error-text" *ngIf="tieneError('dni', 'required')">
+          El DNI es requerido
+        </small>
+        <small class="error-text" *ngIf="tieneError('dni', 'pattern')">
+          DNI debe tener 8 dígitos
+        </small>
+      </div>
+
+      <!-- Teléfono -->
+      <div class="form-group">
+        <label for="telefono">
+          Teléfono <span class="required">*</span>
+        </label>
+        <input
+          id="telefono"
+          type="tel"
+          formControlName="telefono"
+          placeholder="Ej: 987654321"
+          class="form-input"
+          [class.error]="tieneError('telefono', 'required') || tieneError('telefono', 'pattern')" />
+        <small class="error-text" *ngIf="tieneError('telefono', 'required')">
+          El teléfono es requerido
+        </small>
+        <small class="error-text" *ngIf="tieneError('telefono', 'pattern')">
+          Teléfono inválido (7-15 dígitos)
+        </small>
+      </div>
+
+      <!-- Especialidad -->
+      <div class="form-group">
+        <label for="especialidad">
+          Área/Especialidad <span class="required">*</span>
+        </label>
+        <input
+          id="especialidad"
+          type="text"
+          formControlName="especialidad"
+          placeholder="Ej: Motor o escribe una nueva..."
+          list="especialidades-list"
+          class="form-input"
+          [class.error]="tieneError('especialidad', 'required')" />
+        
+        <!-- Datalist con opciones predefinidas -->
+        <datalist id="especialidades-list">
+          <option value="Mecánica General"></option>
+          <option value="Motor"></option>
+          <option value="Electricidad"></option>
+          <option value="Suspensión"></option>
+          <option value="Frenos"></option>
+          <option value="Transmisión"></option>
+          <option value="Pintura"></option>
+          <option value="Carrocería"></option>
+        </datalist>
+        
+        <small class="error-text" *ngIf="tieneError('especialidad', 'required')">
+          La especialidad es requerida
+        </small>
+      </div>
+
+      <!-- Estado -->
+      <div class="form-group">
+        <label for="estado">
+          Estado <span class="required">*</span>
+        </label>
+        <select
+          id="estado"
+          formControlName="estado"
+          class="form-input">
+          <option value="activo">✓ Activo</option>
+          <option value="inactivo">✕ Inactivo</option>
+        </select>
+      </div>
+
+      <!-- Botones de acción -->
+      <div class="form-actions form-group-full">
+        <button
+          type="submit"
+          class="primary-button save"
+          [disabled]="guardando || formularioMecanico.invalid">
+          {{ guardando ? '⏳ Guardando...' : (editando ? '💾 Actualizar' : '➕ Registrar') }}
+        </button>
+        <button
+          *ngIf="editando"
+          type="button"
+          class="outline-button"
+          (click)="resetearFormulario()">
+          ✕ Cancelar
+        </button>
+      </div>
+    </form>
+  </section>
+
+  <!-- LISTA DE MECÁNICOS -->
+  <section class="mecanicos-panel">
+    <div class="panel-toolbar">
+      <div class="panel-title">
+        <h2>Lista de Mecánicos</h2>
+        <span *ngIf="!mecanicosVacios">({{ mecanicosFiltrados.length }})</span>
+      </div>
+    </div>
+
+    <!-- Buscador -->
+    <label class="search-box">
+      <span>⌕</span>
+      <input
+        type="text"
+        placeholder="Buscar por nombre, apellido, teléfono o especialidad..."
+        [(ngModel)]="busqueda" />
+    </label>
+
+    <!-- Tabla de Mecánicos -->
+    <div class="table-wrap">
+      <table *ngIf="!mecanicosVacios">
+        <thead>
+          <tr>
+            <th>Nombre Completo</th>
+            <th>DNI</th>
+            <th>Teléfono</th>
+            <th>Especialidad</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let mecanico of mecanicosMostrados">
+            <td class="cell-nombre">
+              <strong>{{ mecanico.nombre_completo }}</strong>
+              <small>{{ mecanico.correo }}</small>
+            </td>
+            <td class="cell-dni">
+              {{ mecanico.dni }}
+            </td>
+            <td class="cell-telefono">
+              {{ mecanico.telefono }}
+            </td>
+            <td class="cell-especialidad">
+              {{ mecanico.especialidad }}
+            </td>
+            <td class="cell-estado">
+              <span class="status-badge" [class.inactive]="mecanico.estado === 'inactivo'">
+                {{ mecanico.estado === 'activo' ? '✓ Activo' : '✕ Inactivo' }}
+              </span>
+            </td>
+            <td class="cell-acciones">
+              <div class="row-actions">
+                <button
+                  type="button"
+                  class="row-button edit"
+                  title="Editar"
+                  (click)="editarMecanico(mecanico)">
+                  ✎
+                </button>
+                <button
+                  type="button"
+                  class="row-button delete"
+                  title="Eliminar"
+                  (click)="eliminarMecanico(mecanico)">
+                  ✕
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Estado vacío -->
+      <div *ngIf="mecanicosVacios" class="empty-state">
+        <strong>No hay mecánicos registrados</strong>
+        <p>Comienza registrando un nuevo mecánico en el formulario superior</p>
+      </div>
+    </div>
+
+    <!-- Botón "Cargar más" -->
+    <div *ngIf="quedanMecanicosOcultos > 0" class="load-more">
+      <button type="button" class="outline-button" (click)="cargarMas()">
+        Cargar {{ quedanMecanicosOcultos }} más
+      </button>
+    </div>
+  </section>
+</div>
