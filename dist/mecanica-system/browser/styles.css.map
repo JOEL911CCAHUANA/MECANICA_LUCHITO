@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/styles.css"],
+  "sourcesContent": ["/* You can add global styles to this file, and also import other style files */\n* {\n  box-sizing: border-box;\n}\n\nhtml, body, app-root {\n  margin: 0;\n  padding: 0;\n  min-height: 100%;\n  width: 100%;\n}\n\nbody {\n  background: #a2afcc;\n  color: #d6e0ee;\n  overflow-x: hidden;\n}\n\napp-root {\n  display: block;\n  min-height: 100vh;\n}\n"],
+  "mappings": ";AACA;AACE,cAAY;AACd;AAEA;AAAM;AAAM;AACV,UAAQ;AACR,WAAS;AACT,cAAY;AACZ,SAAO;AACT;AAEA;AACE,cAAY;AACZ,SAAO;AACP,cAAY;AACd;AAEA;AACE,WAAS;AACT,cAAY;AACd;",
+  "names": []
+}
